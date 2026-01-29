@@ -20,7 +20,6 @@ Design for performance and scalability from day one.
 - **Stateless design** - Backend should be horizontally scalable
 - **Efficient queries** - Index database fields appropriately
 - **Pagination** - Implement for list endpoints
-- **Background processing** - Use Celery for heavy operations
 
 ## Examples
 
