@@ -13,25 +13,7 @@ Next.js frontend development standards and conventions.
 - **Next.js 15+** with React Server Components (RSC)
 - **TypeScript** with strict mode
 - **Zod** for validation schemas
-- **TanStack Query** for server state management
-- **Zustand** for global UI state
-- **Tailwind CSS** + **Shadcn UI** for styling
 - **Vitest** + **React Testing Library** for testing
-
-## Code Organization
-
-- **App router** structure in `src/app/`
-- **Components** organized by feature in `src/components/`
-- **API client** and hooks in `src/lib/api/`
-- **Zod schemas** in `src/lib/validations/`
-- **Zustand stores** in `src/stores/`
-- **Custom hooks** in `src/hooks/`
-
-## State Management
-
-- **TanStack Query** for all server state (caching, invalidation)
-- **Zustand** for UI state (sidebar, modals, auth tokens)
-- **Optimistic updates** where appropriate
 
 ## Examples
 
