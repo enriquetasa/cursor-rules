@@ -9,7 +9,7 @@ All code must prioritize observability, safety, and stability.
 
 ## Logging Requirements
 
-- **Structured JSON logging** in backend (Django)
+- **Structured JSON logging** in backend
 - **Plenty of logging** throughout the codebase
 - **Log levels:** Use appropriate levels (DEBUG, INFO, WARNING, ERROR, CRITICAL)
 - **Context:** Include relevant context in log messages
