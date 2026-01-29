@@ -1,0 +1,34 @@
+---
+description: Cost optimization requirements for infrastructure and resources
+alwaysApply: true
+---
+
+# Cost Efficiency
+
+Keep operational costs as low as possible, especially during initial development.
+
+## Requirements
+
+- **Optimize resource usage** - Don't over-provision
+- **Efficient database queries** - Reduce database load
+- **Caching** - Use Redis to reduce redundant operations
+- **Background tasks** - Batch operations when possible
+- **Monitoring** - Track resource usage to identify waste
+
+## Infrastructure Considerations
+
+- **Start small** - Use minimal droplet sizes initially
+- **Scale up** - Only when needed, based on actual usage
+- **Database optimization** - Proper indexing, query optimization
+- **CDN usage** - Use Cloudflare for static assets
+
+## Examples
+
+```python
+# ❌ BAD - Inefficient, multiple database hits
+for user in users:
+    send_email(user)  # Each email is a separate task
+
+# ✅ GOOD - Batch processing
+send_bulk_emails(users)  # Single task processes all
+```

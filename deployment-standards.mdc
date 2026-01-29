@@ -1,0 +1,48 @@
+---
+description: Deployment standards for Docker, CI/CD, and infrastructure
+alwaysApply: true
+---
+
+# Deployment Standards
+
+Docker, CI/CD, and infrastructure deployment conventions.
+
+## Docker Requirements
+
+- **All services containerized** - Backend, frontend, database, Redis, Celery
+- **Health check endpoints** for all services
+- **Multi-stage builds** for optimization
+- **Production docker-compose** for orchestration
+
+## CI/CD Pipeline
+
+- **GitHub Actions** for all automation
+- **Workflows:**
+  - `*-ci.yml` - Linting, testing, coverage checks on PRs
+  - `*-deploy.yml` - Build and deploy on push to main
+- **Automated testing** before deployment
+- **Coverage enforcement** (80% minimum)
+
+## Infrastructure
+
+- **DigitalOcean Ubuntu droplets**
+- **Cloudflare** for DNS and SSL (Full strict mode)
+- **Automated backups** for database
+- **Environment-specific settings** (local, staging, production)
+- **Log rotation** configured
+
+## Examples
+
+```yaml
+# ✅ GOOD - CI workflow structure
+name: Backend CI
+on:
+  pull_request:
+    branches: [main, staging]
+jobs:
+  test:
+    - Run linting (ruff, black)
+    - Run tests with coverage
+    - Fail if coverage < 80%
+    - Run security scan (bandit, safety)
+```

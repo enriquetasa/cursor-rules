@@ -1,0 +1,55 @@
+---
+description: Code quality standards - linting, formatting, type checking, security
+alwaysApply: true
+---
+
+# Code Quality Standards
+
+Linting, formatting, type checking, and security requirements.
+
+## Backend (Python)
+
+- **Ruff** for linting
+- **Black** for code formatting
+- **Type hints** where appropriate
+- **Security scanning:** bandit, safety
+- **Pre-commit hooks** for automatic checks
+
+## Frontend (TypeScript)
+
+- **ESLint** for linting
+- **Prettier** for code formatting
+- **TypeScript strict mode** - Type checking enforced
+- **No `any` types** - Use proper types or `unknown`
+
+## CI/CD Enforcement
+
+- **All checks must pass** before merge
+- **Automated runs** on pull requests
+- **Branch protection** on main, staging, develop
+
+## Examples
+
+```python
+# ✅ GOOD - Type hints
+def create_task(week_id: int, title: str) -> Task:
+    return Task.objects.create(week_id=week_id, title=title)
+```
+
+```typescript
+// ✅ GOOD - Proper types
+interface Task {
+  id: string;
+  title: string;
+  isCompleted: boolean;
+}
+
+function updateTask(task: Task): Promise<Task> {
+  // Implementation
+}
+
+// ❌ BAD - Using 'any'
+function updateTask(task: any): any {
+  // Implementation
+}
+```

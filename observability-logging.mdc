@@ -1,0 +1,47 @@
+---
+description: Structured logging and observability requirements
+alwaysApply: true
+---
+
+# Observability, Safety, and Stability
+
+All code must prioritize observability, safety, and stability.
+
+## Logging Requirements
+
+- **Structured JSON logging** in backend (Django)
+- **Plenty of logging** throughout the codebase
+- **Log levels:** Use appropriate levels (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+- **Context:** Include relevant context in log messages
+
+## Error Handling
+
+- **Never silently swallow errors** - Always log and handle appropriately
+- **Structured error responses** - Consistent error format across APIs
+- **Error context** - Include stack traces and relevant data in logs
+
+## Examples
+
+```python
+# ✅ GOOD
+import logging
+
+logger = logging.getLogger(__name__)
+
+try:
+    result = process_task(task_id)
+    logger.info("Task processed successfully", extra={"task_id": task_id})
+except Exception as e:
+    logger.error("Task processing failed", extra={"task_id": task_id}, exc_info=True)
+    raise
+```
+
+```typescript
+// ✅ GOOD
+try {
+  await api.createTask(data);
+} catch (error) {
+  logger.error('Failed to create task', { error, data });
+  throw new TaskCreationError('Unable to create task', { cause: error });
+}
+```

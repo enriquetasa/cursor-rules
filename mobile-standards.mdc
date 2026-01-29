@@ -1,0 +1,53 @@
+---
+description: Mobile app development standards for iOS and Android (Post-MVP)
+globs: mobile/**/*.{swift,kt}
+alwaysApply: false
+---
+
+# Mobile App Standards
+
+Native mobile app development standards (Post-MVP).
+
+## Technology Stack
+
+- **iOS:** Swift (iOS 17+)
+- **Android:** Kotlin (Android 12+)
+- **Lightweight clients** - Minimal business logic
+
+## Architecture
+
+- **Offline-first** with local storage
+- **Sync engine** with last-write-wins resolution
+- **Background sync** for data updates
+- **Biometric authentication** (Face ID / Touch ID)
+
+## Storage
+
+- **iOS:** Core Data or SwiftData
+- **Android:** Room database
+- **Token storage:** Keychain (iOS), EncryptedSharedPreferences (Android)
+
+## Requirements
+
+- **Keep mobile apps lightweight** - Business logic in backend
+- **API communication only** - No complex calculations
+- **Offline support** with sync when online
+
+## Examples
+
+```swift
+// ✅ GOOD - Lightweight API client
+func fetchTasks(weekId: String) async throws -> [Task] {
+    return try await apiClient.get("/api/v1/weeks/\(weekId)/tasks")
+}
+```
+
+```kotlin
+// ✅ GOOD - Offline storage with Room
+@Entity
+data class Task(
+    @PrimaryKey val id: String,
+    val title: String,
+    val isCompleted: Boolean
+)
+```

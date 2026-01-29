@@ -1,0 +1,54 @@
+---
+description: REST API design standards and authentication patterns
+globs: backend/**/api.py
+alwaysApply: false
+---
+
+# API Design Standards
+
+RESTful API design and authentication conventions.
+
+## API Structure
+
+- **RESTful endpoints** following REST principles
+- **Versioned URLs** - All endpoints under `/api/v1/`
+- **Django Ninja** for API framework
+- **OpenAPI/Swagger** documentation auto-generated
+
+## Authentication
+
+- **JWT tokens** with httpOnly cookies
+- **Access token:** Short-lived (15 minutes), stored in memory (frontend)
+- **Refresh token:** Long-lived, stored in httpOnly cookie (backend managed)
+- **Refresh flow:** On 401, call `/api/v1/auth/refresh`, retry original request
+
+## Response Format
+
+- **Consistent error responses** across all endpoints
+- **Pagination** for list endpoints
+- **Appropriate HTTP status codes**
+
+## Examples
+
+```python
+# ✅ GOOD - Django Ninja endpoint
+from ninja import Router
+
+router = Router()
+
+@router.post("/tasks", response=TaskSchema)
+def create_task(request, week_id: int, data: TaskCreateSchema):
+    # Implementation
+    pass
+```
+
+```python
+# ✅ GOOD - Permission check
+from core.permissions import require_role
+
+@router.get("/tasks")
+@require_role(["ADMIN", "LEAD"])
+def list_tasks(request, week_id: int):
+    # Only admins and leads can see all task details
+    pass
+```

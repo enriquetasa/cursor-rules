@@ -1,0 +1,55 @@
+---
+description: Git commit message format and atomic commit standards
+alwaysApply: true
+---
+
+# Git Commit Standards
+
+Git history is extremely important. Follow these rules for all commits.
+
+## Commit Structure
+
+- **Small, atomic commits** - One logical change per commit
+- **Separate subject from body** with a blank line
+- **Subject line:**
+  - Maximum 50 characters
+  - Capitalize first letter
+  - No period at the end
+  - Use imperative mood ("Add feature" not "Added feature")
+- **Body:**
+  - Wrap at 72 characters
+  - Explain "what and why" vs "how"
+  - Use the template below
+
+## Commit Message Template
+
+```bash
+# If applied, this commit will...
+
+# Why is this change needed?
+
+# How does it address the issue?
+
+# Provide links to any relevant tickets, articles or other resources
+```
+
+## Examples
+
+```bash
+✅ GOOD
+Add user authentication endpoint
+
+Implement JWT-based authentication to secure API access.
+
+Uses django-ninja-jwt for token generation and validation.
+Access tokens expire in 15 minutes, refresh tokens in httpOnly cookies.
+
+Related: #123
+```
+
+```bash
+❌ BAD
+fix stuff
+
+Fixed the bug
+```
