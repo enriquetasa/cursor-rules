@@ -1,0 +1,34 @@
+Run an auditor-style codebase audit for “documented/implied but not actually wired up” issues.
+Goals:
+1) Find gaps between docs and reality
+2) Find incomplete/missing config and setup expectations
+3) Find technically confusing or low-usability implementation choices
+4) Fix high-confidence, low-risk issues automatically
+5) Provide a plan for anything bigger
+Execution requirements:
+- Work in parallel passes:
+  - Pass A: docs vs code/config mismatch
+  - Pass B: config/composition/CI/env completeness
+  - Pass C: implementation wiring and UX consistency
+- Prioritize by severity: High / Medium / Low
+- For each finding, include:
+  - What is wrong
+  - Evidence (file paths)
+  - Why it matters for newcomers/maintainers
+  - Proposed fix scope (small/medium/large)
+- Apply fixes immediately for small + safe items.
+- After edits, run relevant lint/tests for changed areas.
+- Never do destructive git operations.
+- End with:
+  1) “Fixed now” list
+  2) “Needs decision” list
+  3) “Suggested next PRs” list
+Output format:
+## Audit Findings
+(table: Severity | Area | Issue | Evidence | Impact | Fix Scope)
+## Fixed Now
+(bulleted list with changed files)
+## Remaining Gaps
+(bulleted list with proposed approach)
+## Validation
+(commands run + pass/fail)

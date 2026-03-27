@@ -1,0 +1,60 @@
+# implement
+
+Implement the requested change end-to-end with production quality.
+
+Execution protocol:
+1) Understand scope and constraints from the request and repo rules/config.
+2) If the task is broad/ambiguous, present a short implementation plan first; otherwise proceed directly.
+3) Use subagents when appropriate (parallelize exploration, auditing, long-running validation, or isolated investigations).
+4) Implement in small, atomic commits:
+   - one logical change per commit
+   - clear commit message (what + why)
+   - no unrelated edits
+5) Follow TDD where practical:
+   - add/update tests before or with each behavioral change
+   - keep tests close to changed behavior
+6) After each commit, run targeted checks for touched areas.
+7) When the full feature is complete, run full CI-equivalent checks locally (same lint/type/test/build/security steps GitHub Actions expects).
+8) If any check fails, fix and re-run until all pass.
+9) Ensure all configured project rules are satisfied (coding, testing, performance, logging, architecture, etc.).
+10) Never use destructive git operations.
+
+Required final output:
+## What changed
+- Concise feature summary
+- Commit list (hash + message)
+
+## Validation
+- Commands run
+- Results (pass/fail)
+- Notes on any non-blocking warnings
+
+## Follow-ups
+- Any remaining risks or deferred items
+
+Also create a markdown file in the repo root:
+`PR_MESSAGE.md`
+
+`PR_MESSAGE.md` must contain:
+## Title
+<clear PR title>
+
+## Summary
+- key change 1
+- key change 2
+- key change 3
+
+## Why
+- problem addressed
+- user/developer impact
+
+## Testing
+- [x] unit tests
+- [x] integration/e2e (if applicable)
+- [x] lint/type/build checks
+
+## Notes for reviewers
+- migration/env/config implications
+- rollout/rollback notes (if any)
+
+Generate this PR message against `main` (entire branch diff), not just the last commit.
