@@ -1,0 +1,29 @@
+---
+description: REST API design standards and authentication patterns
+globs: backend/**/api.py
+alwaysApply: false
+---
+
+# API Design Standards
+
+RESTful API design and authentication conventions.
+
+## API Structure
+
+- **RESTful endpoints** following REST principles
+- **Versioned URLs** - All endpoints under `/api/v1/`
+- **Django Ninja** for API framework
+- **OpenAPI/Swagger** documentation auto-generated
+
+## Authentication
+
+- **JWT tokens** with httpOnly cookies
+- **Access token:** Short-lived (15 minutes), stored in memory (frontend)
+- **Refresh token:** Long-lived, stored in httpOnly cookie (backend managed)
+- **Refresh flow:** On 401, call `/api/v1/auth/refresh`, retry original request
+
+## Response Format
+
+- **Consistent error responses** across all endpoints
+- **Pagination** for list endpoints
+- **Appropriate HTTP status codes**

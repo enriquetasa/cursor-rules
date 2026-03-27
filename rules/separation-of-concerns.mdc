@@ -1,0 +1,44 @@
+---
+description: Architecture separation - business logic in backend, lightweight clients
+alwaysApply: true
+---
+
+# Separation of Concerns
+
+Maintain clear separation between backend and client applications.
+
+## Backend Responsibilities
+
+- **All business logic** resides in the backend
+- **Data validation** and processing
+- **Database operations** and queries
+- **Authentication and authorization** logic
+- **Background tasks** and scheduling
+
+## Frontend Responsibilities
+
+- **UI rendering** and user interactions
+- **Client-side state management** (Zustand)
+- **Server state caching** (TanStack Query)
+- **Form validation** (Zod schemas)
+- **API client** and request handling
+
+## Mobile App Responsibilities
+
+- **Lightweight clients** - Minimal business logic
+- **Offline storage** and sync
+- **UI rendering** and native interactions
+- **API communication** only
+
+## Anti-Patterns
+
+```typescript
+// ❌ BAD - Business logic in frontend
+function calculateTaskCompletion(tasks) {
+  // Complex calculation that should be in backend
+  return tasks.filter(t => t.completed).length / tasks.length;
+}
+
+// ✅ GOOD - Backend provides computed values
+// API returns: { completion_percentage: 75 }
+```

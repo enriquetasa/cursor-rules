@@ -1,0 +1,41 @@
+---
+description: Test-Driven Development (TDD) standards - write tests first
+alwaysApply: true
+---
+
+# Test-Driven Development
+
+All development must follow Test-Driven Development principles.
+
+## Requirements
+
+- **Write tests BEFORE implementation** - Tests define the expected behavior
+- **Minimum 80% code coverage** - Enforced in CI/CD pipelines
+- **Test all layers:**
+  - Models and database logic
+  - API endpoints and request/response handling
+  - Business logic services
+  - Utility functions
+  - UI components (frontend)
+
+## Example
+
+```python
+# ✅ GOOD - Test first
+def test_create_task():
+    # Test implementation
+    pass
+
+# Then implement the feature
+```
+
+```typescript
+// ✅ GOOD - Test first
+describe('TaskForm', () => {
+  it('validates required fields', () => {
+    // Test implementation
+  });
+});
+
+// Then implement the component
+```

@@ -1,0 +1,46 @@
+---
+description: Real-time WebSocket updates and connection management
+globs: frontend/**/*.{ts,tsx},backend/**/websocket*.py
+alwaysApply: false
+---
+
+# Real-Time Updates
+
+WebSocket-based real-time synchronization for team collaboration.
+
+## Technology
+
+- **WebSocket connection** (Socket.io or native WS)
+- **TanStack Query cache invalidation** on server events
+- **Zustand** for connection state management
+- **Exponential backoff** for reconnection
+
+## Connection State
+
+- **UI indicators** for connection status (connected/reconnecting/disconnected)
+- **Automatic reconnection** with exponential backoff
+- **Event types:** `task:updated`, `goal:created`, `week:transitioned`, `blocker:resolved`
+
+## Implementation
+
+- **Backend emits events** on data changes
+- **Frontend invalidates queries** on relevant events
+- **Optimistic updates** where appropriate
+
+## Examples
+
+```typescript
+// ✅ GOOD - Connection state in Zustand
+const useWebSocketStore = create((set) => ({
+  connected: false,
+  reconnectAttempts: 0,
+  setConnected: (connected) => set({ connected }),
+}));
+```
+
+```typescript
+// ✅ GOOD - Query invalidation on events
+socket.on('task:updated', (data) => {
+  queryClient.invalidateQueries(['tasks', data.week_id]);
+});
+```

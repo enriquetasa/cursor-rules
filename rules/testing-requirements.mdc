@@ -1,0 +1,50 @@
+---
+description: Testing requirements and coverage standards
+alwaysApply: true
+---
+
+# Testing Requirements
+
+Comprehensive testing standards across all layers.
+
+## Coverage Requirements
+
+- **Minimum 80% code coverage** - Enforced in CI/CD
+- **All layers tested:**
+  - Unit tests for utilities and business logic
+  - Component tests for UI components (frontend)
+  - Integration tests for pages/flows
+  - API endpoint tests (backend)
+  - Model tests (backend)
+
+## Test Organization
+
+- **Backend:** `tests/` directory in each Django app
+- **Frontend:** `__tests__/` directories co-located with code
+- **Test naming:** Descriptive test names explaining what is tested
+
+## CI/CD Enforcement
+
+- **Tests must pass** before merge
+- **Coverage check** fails if below 80%
+- **Linting and type checking** must pass
+
+## Examples
+
+```python
+# ✅ GOOD - Backend test
+def test_create_task_requires_authentication(client):
+    response = client.post("/api/v1/weeks/1/tasks", json={})
+    assert response.status_code == 401
+```
+
+```typescript
+// ✅ GOOD - Frontend test
+describe('TaskForm', () => {
+  it('displays validation error when title is empty', async () => {
+    render(<TaskForm />);
+    await userEvent.click(screen.getByRole('button', { name: 'Submit' }));
+    expect(screen.getByText('Title is required')).toBeInTheDocument();
+  });
+});
+```

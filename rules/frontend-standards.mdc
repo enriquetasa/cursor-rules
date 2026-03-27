@@ -1,0 +1,38 @@
+---
+description: Frontend standards for Next.js, TypeScript, React, and TanStack Query
+globs: frontend/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Frontend Standards
+
+Next.js frontend development standards and conventions.
+
+## Technology Stack
+
+- **Next.js 15+** with React Server Components (RSC)
+- **TypeScript** with strict mode
+- **Zod** for validation schemas
+- **Vitest** + **React Testing Library** for testing
+
+## Examples
+
+```typescript
+// ✅ GOOD - TanStack Query hook
+export function useTasks(weekId: string) {
+  return useQuery({
+    queryKey: ['tasks', weekId],
+    queryFn: () => api.tasks.list(weekId),
+  });
+}
+```
+
+```typescript
+// ✅ GOOD - Zod validation
+import { z } from 'zod';
+
+export const taskSchema = z.object({
+  title: z.string().min(1, 'Title is required'),
+  description: z.string().optional(),
+});
+```

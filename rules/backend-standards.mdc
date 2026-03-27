@@ -1,0 +1,52 @@
+---
+description: Backend-specific standards for Django, PostgreSQL, and Python
+globs: backend/**/*.py
+alwaysApply: false
+---
+
+# Backend Standards
+
+Django backend development standards and conventions.
+
+## Technology Stack
+
+- **Django** with Django Ninja for REST APIs
+- **PostgreSQL 16** for database
+- **Redis 7** for caching
+- **Celery** for background tasks
+- **Structured JSON logging** throughout
+
+## Code Organization
+
+- **Django apps** organized by domain (users, teams, weeks, goals, tasks, events, blockers)
+- **Settings** split by environment (base, local, staging, production)
+- **Core utilities** in `core/` directory (logging, exceptions, permissions)
+
+## Testing
+
+- **pytest** with Django integration
+- **80% coverage minimum** enforced in CI
+- **Test structure:** `tests/` directory in each app
+
+## Examples
+
+```python
+# ✅ GOOD - Django app structure
+apps/
+  users/
+    models.py
+    api.py
+    schemas/
+      user.py
+    tests/
+      test_models.py
+      test_api.py
+```
+
+```python
+# ✅ GOOD - Structured logging
+import structlog
+
+logger = structlog.get_logger(__name__)
+logger.info("User created", user_id=user.id, email=user.email)
+```
