@@ -67,9 +67,10 @@ bash scripts/install-project-hooks.sh "/absolute/path/to/your-project"
 This installs `pre-commit`, `commit-msg`, and `pre-push` into the target
 project's `.git/hooks` directory.
 
-Requirement in each target project:
+Behavior in each target project:
 
-- `scripts/quality-gates.sh` must exist and run project-specific quality checks
+- Installer creates `scripts/quality-gates.sh` if missing.
+- Update that script with project-specific quality checks
   (lint/type/test/build/security as applicable).
 
 ## How this interacts with project-local rules

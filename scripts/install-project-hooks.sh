@@ -17,6 +17,27 @@ fi
 
 TARGET_HOOKS_DIR="${TARGET_PROJECT}/.git/hooks"
 mkdir -p "${TARGET_HOOKS_DIR}"
+TARGET_SCRIPTS_DIR="${TARGET_PROJECT}/scripts"
+TARGET_QUALITY_GATES="${TARGET_SCRIPTS_DIR}/quality-gates.sh"
+
+mkdir -p "${TARGET_SCRIPTS_DIR}"
+
+if [[ ! -f "${TARGET_QUALITY_GATES}" ]]; then
+  cat > "${TARGET_QUALITY_GATES}" <<'EOF'
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+echo "Running project quality gates..."
+# Replace with project-specific checks, for example:
+# npm run lint
+# npm run typecheck
+# npm test
+# npm run build
+EOF
+  chmod +x "${TARGET_QUALITY_GATES}"
+  echo "Created starter quality gates script: ${TARGET_QUALITY_GATES}"
+fi
 
 cat > "${TARGET_HOOKS_DIR}/pre-commit" <<EOF
 #!/usr/bin/env bash
@@ -80,4 +101,4 @@ chmod +x \
   "${TARGET_HOOKS_DIR}/pre-push"
 
 echo "Installed project hooks into: ${TARGET_PROJECT}"
-echo "Required in target project: scripts/quality-gates.sh"
+echo "Quality gates script: ${TARGET_QUALITY_GATES}"
