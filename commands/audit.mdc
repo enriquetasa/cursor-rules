@@ -1,4 +1,12 @@
+---
+description: Auditor-style repository consistency command
+alwaysApply: false
+---
+
 Run an auditor-style codebase audit for “documented/implied but not actually wired up” issues.
+Use this command for fast, command-driven audits. For deeper cross-system
+investigations with broader remediation strategy, use the
+`staff-software-engineer-auditor` agent.
 Goals:
 1) Find gaps between docs and reality
 2) Find incomplete/missing config and setup expectations
@@ -32,3 +40,7 @@ Output format:
 (bulleted list with proposed approach)
 ## Validation
 (commands run + pass/fail)
+
+Output contract:
+- Always include all four sections above.
+- Keep evidence concrete with file paths for each finding.

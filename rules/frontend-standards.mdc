@@ -1,38 +1,58 @@
 ---
-description: Frontend standards for Next.js, TypeScript, React, and TanStack Query
+description: Frontend engineering standards for web applications
 globs: frontend/**/*.{ts,tsx}
 alwaysApply: false
 ---
 
 # Frontend Standards
 
-Next.js frontend development standards and conventions.
+Frontend development standards and conventions.
 
-## Technology Stack
+## Hard Requirements
 
-- **Next.js 15+** with React Server Components (RSC)
-- **TypeScript** with strict mode
-- **Zod** for validation schemas
-- **Vitest** + **React Testing Library** for testing
+- Do: keep frontend focused on UI/state orchestration and API consumption.
+- Do: use strong static typing and explicit validation schemas.
+- Do not: move backend business logic into frontend components.
+- Why: predictable UI boundaries reduce drift and duplicated logic.
+
+## Opinionated Defaults
+
+- Use a component-based architecture with clear data boundaries.
+- Use a dedicated server-state caching layer with explicit invalidation.
+- Use schema-based validation for user input and payloads.
+- Follow `quality-gates.mdc` for lint/type/test thresholds.
+
+## Exceptions
+
+- Prototypes can temporarily relax strict layering when speed is critical, but
+  production hardening must restore separation of concerns.
+- Generated client code can include verbose types if checked in intentionally.
+
+## Acceptance Checks
+
+- New frontend modules pass strict type checking.
+- Data fetching and cache invalidation use consistent query patterns.
+- Validation paths exist for user-provided data.
 
 ## Examples
 
 ```typescript
-// ✅ GOOD - TanStack Query hook
-export function useTasks(weekId: string) {
-  return useQuery({
-    queryKey: ['tasks', weekId],
-    queryFn: () => api.tasks.list(weekId),
-  });
+// ✅ GOOD - Server-state query hook
+export async function loadItems(resourceId: string) {
+  const response = await apiClient.get(`/api/v1/resources/${resourceId}/items`);
+  return response.items;
 }
 ```
 
 ```typescript
-// ✅ GOOD - Zod validation
-import { z } from 'zod';
+// ✅ GOOD - Schema validation
+type ItemInput = { title: string; description?: string };
 
-export const taskSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
-  description: z.string().optional(),
-});
+export function validateItemInput(input: ItemInput): string[] {
+  const errors: string[] = [];
+  if (!input.title || input.title.trim().length === 0) {
+    errors.push('Title is required');
+  }
+  return errors;
+}
 ```

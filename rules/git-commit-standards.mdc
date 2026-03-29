@@ -7,19 +7,30 @@ alwaysApply: true
 
 Git history is extremely important. Follow these rules for all commits.
 
-## Commit Structure
+## Hard Requirements
 
-- **Small, atomic commits** - One logical change per commit
-- **Separate subject from body** with a blank line
-- **Subject line:**
-  - Maximum 50 characters
-  - Capitalize first letter
-  - No period at the end
-  - Use imperative mood ("Add feature" not "Added feature")
-- **Body:**
-  - Wrap at 72 characters
-  - Explain "what and why" vs "how"
-  - Use the template below
+- Do: keep commits small and logically atomic.
+- Do: use imperative subject line, <= 50 chars, no trailing period.
+- Do: include body explaining what/why for non-trivial changes.
+- Do not: mix unrelated concerns in one commit.
+- Why: clean history improves debugging, review quality, and rollback safety.
+
+## Opinionated Defaults
+
+- Wrap body lines around 72 chars.
+- Separate subject/body with a blank line.
+- Reference issue IDs when available.
+
+## Exceptions
+
+- Tiny typo/docs-only fixes may omit body if intent is obvious.
+- Emergency fixes can use short messages if follow-up cleanup commit is planned.
+
+## Acceptance Checks
+
+- Commit messages follow formatting and intent rules.
+- Each commit maps to one logical change area.
+- Reviewers can infer rationale from subject/body alone.
 
 ## Commit Message Template
 
@@ -37,12 +48,12 @@ Git history is extremely important. Follow these rules for all commits.
 
 ```bash
 ✅ GOOD
-Add user authentication endpoint
+Add authentication endpoint
 
-Implement JWT-based authentication to secure API access.
+Implement token-based authentication to secure API access.
 
-Uses django-ninja-jwt for token generation and validation.
-Access tokens expire in 15 minutes, refresh tokens in httpOnly cookies.
+Uses short-lived access credentials with secure refresh handling.
+Improves session security while keeping client retry behavior predictable.
 
 Related: #123
 ```

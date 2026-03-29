@@ -7,16 +7,34 @@ alwaysApply: true
 
 All development must follow Test-Driven Development principles.
 
-## Requirements
+## Hard Requirements
 
-- **Write tests BEFORE implementation** - Tests define the expected behavior
-- **Minimum 80% code coverage** - Enforced in CI/CD pipelines
-- **Test all layers:**
-  - Models and database logic
-  - API endpoints and request/response handling
-  - Business logic services
-  - Utility functions
-  - UI components (frontend)
+- Do: write a failing test before implementation when feasible.
+- Do: follow red-green-refactor for behavior changes.
+- Do not: ship behavioral changes without test coverage.
+- Why: test-first development catches regressions early and clarifies intent.
+
+## Opinionated Defaults
+
+- Keep tests close to implementation changes in same PR/commit.
+- Run targeted tests first, then broader suites.
+- Pair with `testing-requirements.mdc` and `quality-gates.mdc`.
+
+## Exceptions
+
+- Strict TDD can be skipped for urgent hotfixes, fragile legacy code, or
+  low-risk mechanical refactors only when:
+  - the reason is documented, and
+  - regression tests are added immediately after the change.
+
+Coverage thresholds, required test layers, and CI gates are defined in
+`testing-requirements.mdc`.
+
+## Acceptance Checks
+
+- Behavioral code changes include updated/new tests.
+- PR notes mention exception rationale when strict TDD was skipped.
+- Tests demonstrate failure-before-fix for non-trivial new behavior.
 
 ## Example
 

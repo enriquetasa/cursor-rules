@@ -7,20 +7,32 @@ alwaysApply: true
 
 Keep operational costs as low as possible, especially during initial development.
 
-## Requirements
+## Hard Requirements
 
-- **Optimize resource usage** - Don't over-provision
-- **Efficient database queries** - Reduce database load
-- **Caching** - Use Redis to reduce redundant operations
-- **Background tasks** - Batch operations when possible
-- **Monitoring** - Track resource usage to identify waste
+- Do: right-size infrastructure to current demand and track utilization.
+- Do: avoid wasteful query patterns and redundant recomputation.
+- Do not: over-provision by default without measured need.
+- Why: sustainable cost control extends runway and improves efficiency.
 
-## Infrastructure Considerations
+## Opinionated Defaults
 
-- **Start small** - Use minimal droplet sizes initially
-- **Scale up** - Only when needed, based on actual usage
-- **Database optimization** - Proper indexing, query optimization
-- **CDN usage** - Use Cloudflare for static assets
+- Start with minimal instance sizes and scale by observed load.
+- Batch background work where correctness allows it.
+- Use caching and CDN distribution for frequently accessed content.
+- Pair this rule with `performance-scalability.mdc` using README conflict order.
+
+## Exceptions
+
+- Temporary over-provisioning is acceptable for launch windows or migrations
+  when rollback/scale-down plans are defined.
+- Expensive observability tools are acceptable when required for incident
+  mitigation.
+
+## Acceptance Checks
+
+- Resource usage metrics are tracked and reviewed periodically.
+- Query hotspots and cache hit/miss behavior are observable.
+- Cost-impacting changes include a rationale in PR notes.
 
 ## Examples
 

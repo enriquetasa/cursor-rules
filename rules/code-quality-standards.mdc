@@ -7,26 +7,32 @@ alwaysApply: true
 
 Linting, formatting, type checking, and security requirements.
 
-## Backend (Python)
+## Hard Requirements
 
-- **Ruff** for linting
-- **Black** for code formatting
-- **Type hints** where appropriate
-- **Security scanning:** bandit, safety
-- **Pre-commit hooks** for automatic checks
+- Do: enforce linting, formatting, type checks, and tests before merge.
+- Do: run security scans for backend dependencies and code.
+- Do not: merge known failing lint/type checks without explicit waiver.
+- Why: automated quality gates prevent regressions and reduce review overhead.
 
-## Frontend (TypeScript)
+## Opinionated Defaults
 
-- **ESLint** for linting
-- **Prettier** for code formatting
-- **TypeScript strict mode** - Type checking enforced
-- **No `any` types** - Use proper types or `unknown`
+- Backend: use a fast linter, formatter, dependency scanner, and type checks.
+- Frontend: use linting, formatting, strict typing, and avoid `any`.
+- Prefer pre-commit hooks for fast local feedback.
+- CI/coverage expectations are canonicalized in `quality-gates.mdc`.
 
-## CI/CD Enforcement
+## Exceptions
 
-- **All checks must pass** before merge
-- **Automated runs** on pull requests
-- **Branch protection** on main, staging, develop
+- Legacy modules can use temporary ignore lists only with issue tracking and
+  expiry date.
+- Typed escape hatches (`any`, `# type: ignore`) are allowed only with
+  justification comments.
+
+## Acceptance Checks
+
+- CI includes lint, format, type-check, and test stages.
+- Branch protection blocks merges on failing required checks.
+- New code avoids untracked lint/type suppressions.
 
 ## Examples
 

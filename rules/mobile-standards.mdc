@@ -8,46 +8,45 @@ alwaysApply: false
 
 Native mobile app development standards (Post-MVP).
 
-## Technology Stack
+## Hard Requirements
 
-- **iOS:** Swift (iOS 17+)
-- **Android:** Kotlin (Android 12+)
-- **Lightweight clients** - Minimal business logic
+- Do: keep mobile clients lightweight and backend-driven for business logic.
+- Do: support offline behavior with clear sync strategy.
+- Do not: implement complex domain logic only in mobile clients.
+- Why: backend-centric logic keeps behavior consistent across platforms.
 
-## Architecture
+## Opinionated Defaults
 
-- **Offline-first** with local storage
-- **Sync engine** with last-write-wins resolution
-- **Background sync** for data updates
-- **Biometric authentication** (Face ID / Touch ID)
+- Use platform-native secure storage for auth/session tokens.
+- Use native language and tooling for each platform.
+- Prefer offline-first storage and background sync.
+- Prefer biometric auth where product requirements demand it.
 
-## Storage
+## Exceptions
 
-- **iOS:** Core Data or SwiftData
-- **Android:** Room database
-- **Token storage:** Keychain (iOS), EncryptedSharedPreferences (Android)
+- Early MVP mobile clients can defer full offline sync when explicitly scoped.
+- Platform-specific deviations are acceptable when security and parity are not
+  compromised.
 
-## Requirements
+## Acceptance Checks
 
-- **Keep mobile apps lightweight** - Business logic in backend
-- **API communication only** - No complex calculations
-- **Offline support** with sync when online
+- Tokens are stored securely using platform-native secure storage.
+- Sync behavior handles reconnect and conflict policy explicitly.
+- Mobile feature behavior matches backend API contract and permissions.
 
 ## Examples
 
-```swift
-// ✅ GOOD - Lightweight API client
-func fetchTasks(weekId: String) async throws -> [Task] {
-    return try await apiClient.get("/api/v1/weeks/\(weekId)/tasks")
-}
+```text
+✅ GOOD - Lightweight mobile client flow
+1) Read cached items from local storage for immediate render.
+2) Fetch fresh items from API endpoint.
+3) Merge results with conflict policy.
+4) Persist merged state back to local storage.
 ```
 
-```kotlin
-// ✅ GOOD - Offline storage with Room
-@Entity
-data class Task(
-    @PrimaryKey val id: String,
-    val title: String,
-    val isCompleted: Boolean
-)
+```text
+✅ GOOD - Secure token handling
+1) Store session tokens in platform-secure storage.
+2) Never log raw token values.
+3) Rotate and clear tokens on logout/session expiry.
 ```

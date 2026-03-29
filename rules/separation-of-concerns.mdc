@@ -7,28 +7,29 @@ alwaysApply: true
 
 Maintain clear separation between backend and client applications.
 
-## Backend Responsibilities
+## Hard Requirements
 
-- **All business logic** resides in the backend
-- **Data validation** and processing
-- **Database operations** and queries
-- **Authentication and authorization** logic
-- **Background tasks** and scheduling
+- Do: keep domain/business logic in backend services.
+- Do: keep clients focused on rendering, interaction, and API orchestration.
+- Do not: duplicate critical business logic across frontend/mobile and backend.
+- Why: single-source business behavior reduces inconsistency and bugs.
 
-## Frontend Responsibilities
+## Opinionated Defaults
 
-- **UI rendering** and user interactions
-- **Client-side state management** (Zustand)
-- **Server state caching** (TanStack Query)
-- **Form validation** (Zod schemas)
-- **API client** and request handling
+- Backend handles validation, authorization, and persistence.
+- Frontend uses focused UI/state/data tools for UX and state concerns.
+- Mobile handles offline UX and API communication, not domain computation.
 
-## Mobile App Responsibilities
+## Exceptions
 
-- **Lightweight clients** - Minimal business logic
-- **Offline storage** and sync
-- **UI rendering** and native interactions
-- **API communication** only
+- Client-side derived presentation logic is acceptable when purely cosmetic.
+- Temporary duplication for migration is acceptable with explicit sunset plan.
+
+## Acceptance Checks
+
+- API remains source of truth for permissions and computed domain outcomes.
+- Client code avoids unreconciled business-rule forks.
+- Cross-platform behavior matches backend decisions on critical paths.
 
 ## Anti-Patterns
 

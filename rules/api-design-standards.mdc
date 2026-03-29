@@ -8,22 +8,30 @@ alwaysApply: false
 
 RESTful API design and authentication conventions.
 
-## API Structure
+## Hard Requirements
 
-- **RESTful endpoints** following REST principles
-- **Versioned URLs** - All endpoints under `/api/v1/`
-- **Django Ninja** for API framework
-- **OpenAPI/Swagger** documentation auto-generated
+- Do: keep endpoints RESTful and versioned under `/api/<version_number>/`.
+- Do: return consistent error envelopes and appropriate HTTP status codes.
+- Do: paginate list endpoints.
+- Do not: introduce unversioned or ad-hoc response formats.
+- Why: predictable contracts reduce client breakage and simplify integrations.
 
-## Authentication
+## Opinionated Defaults
 
-- **JWT tokens** with httpOnly cookies
-- **Access token:** Short-lived (15 minutes), stored in memory (frontend)
-- **Refresh token:** Long-lived, stored in httpOnly cookie (backend managed)
-- **Refresh flow:** On 401, call `/api/v1/auth/refresh`, retry original request
+- Prefer a typed API framework with schema validation.
+- Prefer token-based auth with secure refresh token handling.
+- Prefer short-lived access credentials in client memory.
+- Prefer auto-generated API documentation for every endpoint set.
 
-## Response Format
+## Exceptions
 
-- **Consistent error responses** across all endpoints
-- **Pagination** for list endpoints
-- **Appropriate HTTP status codes**
+- Public endpoints can skip auth when explicitly documented and rate-limited.
+- Internal-only service endpoints can use different auth patterns if security
+  review is recorded.
+
+## Acceptance Checks
+
+- API routes are namespaced under `/api/<version_number>/`.
+- List endpoints expose pagination metadata.
+- Auth flow includes refresh/retry behavior for expiring access tokens.
+- API docs can be generated without schema errors.

@@ -7,42 +7,48 @@ alwaysApply: true
 
 Docker, CI/CD, and infrastructure deployment conventions.
 
-## Docker Requirements
+## Hard Requirements
 
-- **All services containerized** - Backend, frontend, database, Redis, Celery
-- **Health check endpoints** for all services
-- **Multi-stage builds** for optimization
-- **Production docker-compose** for orchestration
+- Do: keep runtime services containerized with health checks.
+- Do: run automated CI checks before deployment.
+- Do: use secure, environment-specific configuration in deployment paths.
+- Do not: deploy unvalidated changes directly to production.
+- Why: deterministic deployments reduce outage risk and recovery time.
 
-## CI/CD Pipeline
+## Opinionated Defaults
 
-- **GitHub Actions** for all automation
-- **Workflows:**
-  - `*-ci.yml` - Linting, testing, coverage checks on PRs
-  - `*-deploy.yml` - Build and deploy on push to main
-- **Automated testing** before deployment
-- **Coverage enforcement** (80% minimum)
+- Use a hosted CI/CD platform for automation.
+- Use workflow naming like `*-ci.yml` and `*-deploy.yml`.
+- Use multi-stage Docker builds to keep images lean.
+- Quality thresholds are defined in `quality-gates.mdc`.
 
-## Infrastructure
+## Exceptions
 
-- **DigitalOcean Ubuntu droplets**
-- **Cloudflare** for DNS and SSL (Full strict mode)
-- **Automated backups** for database
-- **Environment-specific settings** (local, staging, production)
-- **Log rotation** configured
+- Emergency production fixes can bypass normal deployment flow only when:
+  - incident severity justifies urgent action,
+  - approver is identified,
+  - a post-incident remediation task restores normal CI/CD path.
+- Any cloud provider is acceptable if equivalent security, backup,
+  and observability controls are documented.
+
+## Acceptance Checks
+
+- CI workflow runs and passes before deployment workflow trigger.
+- Production services expose health checks and rollback path.
+- Backups, environment separation, and log rotation are documented.
 
 ## Examples
 
 ```yaml
 # ✅ GOOD - CI workflow structure
-name: Backend CI
+name: Service CI
 on:
   pull_request:
     branches: [main, staging]
 jobs:
   test:
-    - Run linting (ruff, black)
+    - Run linting and formatting checks
     - Run tests with coverage
-    - Fail if coverage < 80%
-    - Run security scan (bandit, safety)
+    - Enforce configured minimum coverage
+    - Run dependency and security scans
 ```

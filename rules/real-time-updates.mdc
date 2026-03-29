@@ -1,6 +1,8 @@
 ---
 description: Real-time WebSocket updates and connection management
-globs: frontend/**/*.{ts,tsx},backend/**/websocket*.py
+globs:
+  - frontend/**/*.{ts,tsx}
+  - backend/**/websocket*.py
 alwaysApply: false
 ---
 
@@ -8,39 +10,49 @@ alwaysApply: false
 
 WebSocket-based real-time synchronization for team collaboration.
 
-## Technology
+## Hard Requirements
 
-- **WebSocket connection** (Socket.io or native WS)
-- **TanStack Query cache invalidation** on server events
-- **Zustand** for connection state management
-- **Exponential backoff** for reconnection
+- Do: keep real-time event contracts explicit and version-safe.
+- Do: handle disconnects with retry/backoff behavior.
+- Do not: rely on real-time delivery without fallback sync path.
+- Why: resilient real-time systems protect UX under network instability.
 
-## Connection State
+## Opinionated Defaults
 
-- **UI indicators** for connection status (connected/reconnecting/disconnected)
-- **Automatic reconnection** with exponential backoff
-- **Event types:** `task:updated`, `goal:created`, `week:transitioned`, `blocker:resolved`
+- Use WebSocket with explicit connection states.
+- Use a server-state cache invalidation strategy in response to events.
+- Use a dedicated client state store for connection/session state.
+- Expose status indicators in UI (connected/reconnecting/disconnected).
 
-## Implementation
+## Exceptions
 
-- **Backend emits events** on data changes
-- **Frontend invalidates queries** on relevant events
-- **Optimistic updates** where appropriate
+- Low-frequency domains can use polling if websocket complexity is not justified.
+- Temporary event gaps are acceptable during phased rollout if background
+  reconciliation closes data drift.
+
+## Acceptance Checks
+
+- Connection lifecycle covers initial connect, reconnect, and disconnect states.
+- Event handlers map to query invalidation/update behavior.
+- Fallback refresh path exists when real-time channel is unavailable.
 
 ## Examples
 
 ```typescript
-// ✅ GOOD - Connection state in Zustand
-const useWebSocketStore = create((set) => ({
+// ✅ GOOD - Connection state handling
+const connectionState = {
   connected: false,
   reconnectAttempts: 0,
-  setConnected: (connected) => set({ connected }),
-}));
+};
+
+function setConnected(connected: boolean) {
+  connectionState.connected = connected;
+}
 ```
 
 ```typescript
 // ✅ GOOD - Query invalidation on events
-socket.on('task:updated', (data) => {
-  queryClient.invalidateQueries(['tasks', data.week_id]);
+socket.on('item:updated', (event) => {
+  invalidateResourceCache(`items:${event.resourceId}`);
 });
 ```

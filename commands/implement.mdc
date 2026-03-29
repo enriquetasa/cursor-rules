@@ -1,3 +1,8 @@
+---
+description: End-to-end implementation execution command
+alwaysApply: false
+---
+
 # implement
 
 Implement the requested change end-to-end with production quality.
@@ -18,6 +23,9 @@ Execution protocol:
 8) If any check fails, fix and re-run until all pass.
 9) Ensure all configured project rules are satisfied (coding, testing, performance, logging, architecture, etc.).
 10) Never use destructive git operations.
+11) Decide whether `PR_MESSAGE.md` is needed:
+   - create it only when the repository uses GitHub PR workflows or the user asks,
+   - otherwise include the same PR summary content directly in final output.
 
 Required final output:
 ## What changed
@@ -32,8 +40,9 @@ Required final output:
 ## Follow-ups
 - Any remaining risks or deferred items
 
-Also create a markdown file in the repo root:
-`PR_MESSAGE.md`
+Conditional artifact:
+- If required by repo workflow or requested by user, also create `PR_MESSAGE.md`
+  in the repo root.
 
 `PR_MESSAGE.md` must contain:
 ## Title

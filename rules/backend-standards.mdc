@@ -1,37 +1,45 @@
 ---
-description: Backend-specific standards for Django, PostgreSQL, and Python
+description: Backend engineering standards for services and APIs
 globs: backend/**/*.py
 alwaysApply: false
 ---
 
 # Backend Standards
 
-Django backend development standards and conventions.
+Backend service development standards and conventions.
 
-## Technology Stack
+## Hard Requirements
 
-- **Django** with Django Ninja for REST APIs
-- **PostgreSQL 16** for database
-- **Redis 7** for caching
-- **Celery** for background tasks
-- **Structured JSON logging** throughout
+- Do: keep business logic in backend services and domain apps.
+- Do: use structured JSON logging with contextual fields.
+- Do: keep tests in per-app `tests/` directories.
+- Do not: spread core backend logic across scripts without app ownership.
+- Why: clear ownership and observability improve maintainability at scale.
 
-## Code Organization
+## Opinionated Defaults
 
-- **Django apps** organized by domain (users, teams, weeks, goals, tasks, events, blockers)
-- **Settings** split by environment (base, local, staging, production)
-- **Core utilities** in `core/` directory (logging, exceptions, permissions)
+- Prefer a mature web framework with clear API/service boundaries.
+- Prefer a relational database plus cache and background worker support.
+- Prefer domain-organized service modules (users, teams, goals, tasks).
+- Prefer split settings by environment (base/local/staging/production).
+- For quality gates, follow `quality-gates.mdc`.
 
-## Testing
+## Exceptions
 
-- **pytest** with Django integration
-- **80% coverage minimum** enforced in CI
-- **Test structure:** `tests/` directory in each app
+- Small utility repositories can use simpler structure if boundaries remain clear.
+- Temporary monolithic modules are acceptable during migrations when a
+  refactor plan is documented.
+
+## Acceptance Checks
+
+- New backend features include tests in the relevant service test suite.
+- Logs from critical paths include contextual identifiers.
+- Environment-specific configuration is separated from base settings.
 
 ## Examples
 
 ```python
-# ✅ GOOD - Django app structure
+# ✅ GOOD - Domain service structure
 apps/
   users/
     models.py
@@ -45,8 +53,8 @@ apps/
 
 ```python
 # ✅ GOOD - Structured logging
-import structlog
+import logging
 
-logger = structlog.get_logger(__name__)
-logger.info("User created", user_id=user.id, email=user.email)
+logger = logging.getLogger(__name__)
+logger.info("User created", extra={"user_id": user.id, "email": user.email})
 ```

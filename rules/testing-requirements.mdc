@@ -7,44 +7,50 @@ alwaysApply: true
 
 Comprehensive testing standards across all layers.
 
-## Coverage Requirements
+This rule defines quality gates and test scope. For workflow guidance on how to
+write tests during implementation, follow `test-driven-development.mdc`.
 
-- **Minimum 80% code coverage** - Enforced in CI/CD
-- **All layers tested:**
-  - Unit tests for utilities and business logic
-  - Component tests for UI components (frontend)
-  - Integration tests for pages/flows
-  - API endpoint tests (backend)
-  - Model tests (backend)
+## Hard Requirements
 
-## Test Organization
+- Do: test all major layers (unit, component, integration, API/model).
+- Do not: merge with failing tests or reduced critical-path coverage.
+- Why: layered tests protect reliability and delivery speed.
 
-- **Backend:** `tests/` directory in each Django app
-- **Frontend:** `__tests__/` directories co-located with code
-- **Test naming:** Descriptive test names explaining what is tested
+## Opinionated Defaults
 
-## CI/CD Enforcement
+- Backend tests live in app-level `tests/` directories.
+- Frontend tests live in co-located `__tests__/` folders.
+- Test names should describe behavior and outcome.
+- Canonical gate definitions live in `quality-gates.mdc`.
 
-- **Tests must pass** before merge
-- **Coverage check** fails if below 80%
-- **Linting and type checking** must pass
+## Exceptions
+
+- Temporary reduced coverage can be accepted only with:
+  - documented waiver scope,
+  - target date for remediation,
+  - tracked issue for restoration.
+
+## Acceptance Checks
+
+- CI enforces tests, lint/type checks, and coverage threshold.
+- Critical user journeys have explicit test coverage.
+- New modules include at least one happy-path and one failure-path test.
 
 ## Examples
 
 ```python
 # ✅ GOOD - Backend test
-def test_create_task_requires_authentication(client):
-    response = client.post("/api/v1/weeks/1/tasks", json={})
+def test_create_resource_requires_authentication(client):
+    response = client.post("/api/v1/resources/1/records", json={})
     assert response.status_code == 401
 ```
 
 ```typescript
 // ✅ GOOD - Frontend test
-describe('TaskForm', () => {
-  it('displays validation error when title is empty', async () => {
-    render(<TaskForm />);
-    await userEvent.click(screen.getByRole('button', { name: 'Submit' }));
-    expect(screen.getByText('Title is required')).toBeInTheDocument();
+describe('ResourceForm', () => {
+  it('shows validation error when title is empty', async () => {
+    const result = await submitForm({ title: '' });
+    expect(result.errors).toContain('Title is required');
   });
 });
 ```

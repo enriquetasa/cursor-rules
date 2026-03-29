@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+ROOT_DIR="$(git rev-parse --show-toplevel)"
+VALIDATOR="${ROOT_DIR}/scripts/hooks/validate-commit-message.sh"
+
+cd "${ROOT_DIR}"
+bash scripts/validate-rules.sh
+
+validate_commit_range() {
+  local commit
+  local tmp_file
+
+  while IFS= read -r commit; do
+    [[ -z "${commit}" ]] && continue
+    tmp_file="$(mktemp)"
+    git show -s --format=%B "${commit}" > "${tmp_file}"
+    if ! bash "${VALIDATOR}" "${tmp_file}"; then
+      rm -f "${tmp_file}"
+      echo "pre-push validation error: commit ${commit} failed message checks." >&2
+      exit 1
+    fi
+    rm -f "${tmp_file}"
+  done < <(git rev-list "$@")
+}
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [[ "${local_sha}" == "0000000000000000000000000000000000000000" ]] && continue
+
+  if [[ "${remote_sha}" == "0000000000000000000000000000000000000000" ]]; then
+    validate_commit_range "${local_sha}" --not --remotes
+  else
+    validate_commit_range "${remote_sha}..${local_sha}"
+  fi
+done

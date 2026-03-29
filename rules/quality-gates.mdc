@@ -1,0 +1,37 @@
+---
+description: Canonical quality gates for lint, type checks, tests, and coverage
+alwaysApply: true
+---
+
+# Quality Gates
+
+Single source of truth for merge-blocking engineering checks.
+
+## Hard Requirements
+
+- Do: require lint, format, type-check, and tests to pass before merge.
+- Do: enforce minimum 80% code coverage unless repo explicitly documents an
+  approved temporary exception.
+- Do: run checks in CI and keep local parity scripts available where practical.
+- Do not: bypass failing checks without explicit approval and documented follow-up.
+- Why: consistent quality gates prevent regressions and reduce integration risk.
+
+## Opinionated Defaults
+
+- Use pre-commit hooks for fast local feedback.
+- Keep CI jobs deterministic and aligned with local scripts.
+- Fail fast on lint/type errors before running expensive integration suites.
+
+## Exceptions
+
+- Emergency hotfixes can ship with a temporary gate waiver only when:
+  - incident response requires immediate mitigation, and
+  - a follow-up issue is created to restore full compliance.
+- For legacy repositories below target coverage, allow staged thresholds if they
+  are documented and trend upward.
+
+## Acceptance Checks
+
+- CI workflow includes lint, type checks, and test jobs.
+- Coverage threshold is configured and enforced.
+- PRs include validation output or references to CI run results.
